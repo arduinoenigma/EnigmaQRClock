@@ -5,7 +5,6 @@ byte finishedcollection = 1;
 
 
 //to setup r1h15m22s10u10dx
-//bug: h1m1s1 does not work
 
 void SerialFSM()
 {
@@ -83,9 +82,9 @@ void SerialFSM()
       case 'd':
         {
           Serial.print(hours);
-          Serial.print(":");
+          Serial.print(F(":"));
           Serial.print(mins);
-          Serial.print(":");
+          Serial.print(F(":"));
           Serial.println(secs);
           break;
         }
@@ -100,6 +99,17 @@ void SerialFSM()
           generate();
           break;
         }
+
+        // refresh clock
+      case 'F':
+      case 'f':
+        {
+          buildtimestring();
+          generate();
+          printcode(&outputmatrix[0]);
+          break;
+        }
+
 
         // collect numeric parameter or ; as separator
       default:
@@ -153,6 +163,7 @@ void SerialFSM()
                   if ((collectednumber == 1) || (collectednumber == 5) || (collectednumber == 10) || (collectednumber == 15) || (collectednumber == 20) || (collectednumber == 30) || (collectednumber == 60))
                   {
                     update = collectednumber;
+                    ul_UpdateMillis = update * (unsigned long)1000;
                   }
                   break;
                 }
@@ -160,9 +171,11 @@ void SerialFSM()
                 {
                   if (collectednumber < 4)
                   {
+                    clearPrevQR();
+
                     rotation = collectednumber;
-                    
-                    if ((rotation==0) || (rotation==2))
+
+                    if ((rotation == 0) || (rotation == 2))
                     {
                       xo = 15;
                       yo = 55;
@@ -172,7 +185,7 @@ void SerialFSM()
                       yo = 15;
                       xo = 55;
                     }
-                    
+
                     Tft.setRotation(rotation);
                     Tft.fillScreen(BLACK);
                     printcode(&outputmatrix[0]);

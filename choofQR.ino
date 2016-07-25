@@ -46,26 +46,38 @@ void printcode(unsigned char * array)
   int i = 0;
   int j = 0;
   uint16_t color = 0;
+  byte c = 0;
+  unsigned long mbit = 1;
 
   for (i = 0; i < 21; i++)
   {
+    mbit = 1;
+
     for (j = 0; j < 21; j++)
     {
       if (getbit(&array[0], (21 * i) + j))
       {
-        //Serial.print(" ");
         color = BLACK;
+        c = 0;
       }
       else
       {
-        //Serial.print("x");
         color = WHITE;
+        c = 1;
       }
 
       //@arduinoenigma
-      Tft.fillRectangle(j * s + xo, i * s + yo, s, s, color);
+      if ((previousQR[i] & mbit) != c * mbit)
+      {
+        // ~ is bitwise NOT
+        previousQR[i] = ((previousQR[i] & ~mbit) | (c * mbit));
+
+        Tft.fillRectangle(j * s + xo, i * s + yo, s - 1, s - 1, color);
+      }
+
+      mbit *= 2;
     }
-    //Serial.println("");
+
   }
 }
 
@@ -763,7 +775,6 @@ int generate() {
   unsigned char i;
   //dummy for loop counter
   unsigned char k;
-
 
   ///////////////////////
   //Grab user input
