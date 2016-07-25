@@ -1,5 +1,8 @@
 @echo off
 
+rem change the line below with the serial port number for your arduino
+rem include only the numeric part of the port.
+
 set EnigmaQRPort=9
 
 rem code from: http://stackoverflow.com/questions/4248220/how-can-i-retrieve-the-seconds-part-of-time-in-cmd
