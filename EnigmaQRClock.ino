@@ -70,6 +70,7 @@ byte secs = 0;
 byte ampm = 0;
 byte update = 1;
 byte rotation = 0;
+byte invert = 0;
 
 byte xo = 15;
 byte yo = 55;
@@ -149,6 +150,24 @@ void advancetime()
   }
 }
 
+void clearScreen()
+{
+  uint16_t color = 0;
+
+  clearPrevQR();
+
+  if (invert)
+  {
+    color = WHITE;
+  }
+  else
+  {
+    color = BLACK;
+  }
+
+  Tft.fillScreen(color);
+}
+
 void clearPrevQR()
 {
   for (byte i = 0; i < 21; i++)
@@ -161,7 +180,7 @@ void setup() {
   Serial.begin(9600);
   Tft.TFTinit();
 
-  Serial.println(F("valid init string is: r1;h15;m22;s25;u10;d;x;"));
+  Serial.println(F("valid init string is: i0;r2;h15;m22;s25;u1;d;x;"));
 
   ul_UpdateMillis = update * (unsigned long)1000;
 
@@ -169,7 +188,7 @@ void setup() {
   generate();
   ul_LastGenerated = millis();
 
-  clearPrevQR();
+  clearScreen();
   printcode(&outputmatrix[0]);
 
   advancetime();

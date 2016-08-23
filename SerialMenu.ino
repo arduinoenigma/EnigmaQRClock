@@ -77,6 +77,16 @@ void SerialFSM()
           break;
         }
 
+        // invert colors
+      case 'I':
+      case 'i':
+        {
+          collectednumber = 0;
+          numberstocollect = 1;
+          storenumbersin = 7;
+          break;
+        }
+
         // draw the time
       case 'D':
       case 'd':
@@ -171,8 +181,6 @@ void SerialFSM()
                 {
                   if (collectednumber < 4)
                   {
-                    clearPrevQR();
-
                     rotation = collectednumber;
 
                     if ((rotation == 0) || (rotation == 2))
@@ -187,19 +195,25 @@ void SerialFSM()
                     }
 
                     Tft.setRotation(rotation);
-                    Tft.fillScreen(BLACK);
+                    clearScreen();
+                    printcode(&outputmatrix[0]);
+                  }
+                  break;
+                }
+              case 7:
+                {
+                  if ((collectednumber == 0) || (collectednumber == 1))
+                  {
+                    invert = collectednumber;
+                    clearScreen();
                     printcode(&outputmatrix[0]);
                   }
                   break;
                 }
             }
-
           }
-
           break;
         }
     }
-
-
   }
 }

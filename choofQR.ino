@@ -46,8 +46,22 @@ void printcode(unsigned char * array)
   int i = 0;
   int j = 0;
   uint16_t color = 0;
+  uint16_t colorbg = 0;
+  uint16_t colorfg = 0;
+  
   byte c = 0;
   unsigned long mbit = 1;
+  
+  if (invert)
+  {
+    colorbg = WHITE;
+    colorfg = BLACK;
+  }
+  else
+  {
+    colorbg = BLACK;
+    colorfg = WHITE;    
+  }
 
   for (i = 0; i < 21; i++)
   {
@@ -57,12 +71,12 @@ void printcode(unsigned char * array)
     {
       if (getbit(&array[0], (21 * i) + j))
       {
-        color = BLACK;
+        color = colorbg;
         c = 0;
       }
       else
       {
-        color = WHITE;
+        color = colorfg;
         c = 1;
       }
 
