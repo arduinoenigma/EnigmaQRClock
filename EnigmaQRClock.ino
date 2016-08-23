@@ -10,7 +10,8 @@
 // where X is the serial port number for the clock
 //
 // to set the time, open a serial monitor and type the following command
-// r1;h15;m22;s25;u10;d;x;
+// i0;r1;h15;m22;s25;u10;d;x;
+// i0 sets the normal color scheme, i1 inverts the colors.
 // r1 sets rotation so plug is to the right. Any rotation is fine, setting is for purists
 // h15 sets hours to 15
 // m22 sets minutes to 22
@@ -41,7 +42,7 @@ For /f "tokens=1-4 delims=/:." %%a in ("%TIME%") do (
     SET FF=%%d
 )
 
-set EnigmaQRTime=h%HH24%;m%MI%;s%SS%;u1;x
+set EnigmaQRTime=i1;r2;h%HH24%;m%MI%;s%SS%;u1;x
 echo %EnigmaQRTime% >> com%EnigmaQRPort%:
 echo %EnigmaQRTime%
 */
